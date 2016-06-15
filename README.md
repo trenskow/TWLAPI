@@ -8,9 +8,6 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
 
 # TOC
 
-- [TWL API Documentation](#twl-api-documentation)
-- [Abstract](#abstract)
-- [TOC](#toc)
 - [Communication](#communication)
   * [HTTP Status Codes](#http-status-codes)
   * [Success Status Codes](#success-status-codes)
