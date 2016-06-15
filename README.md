@@ -63,6 +63,7 @@ This is an example of a simple user creation requests.
     POST /users/myusername HTTP/1.1
     Host: api.thingswelove.org
     Content-Type: application/json; charset=utf-8
+    Content-Length: 134
     
     {
     	"email": "my@email.com",
@@ -76,7 +77,7 @@ This is an example of a simple user creation requests.
     Content-Type: application/json; charset=utf-8
     Content-Length: 0
     
-    .
+    [end-of-request]
 
 Filters and authentication tokens are added to requests using query string.
 
