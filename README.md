@@ -12,13 +12,13 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
   * [HTTP Status Codes](#http-status-codes)
   * [Success Status Codes](#success-status-codes)
   * [Redirection Status Codes](#redirection-status-codes)
-  * [Error status codes](#error-status-codes)
+  * [Error Status Codes](#error-status-codes)
   * [Errors](#errors)
 - [Terminology](#terminology)
   * [Endpoints](#endpoints)
-  * [Object types](#object-types)
+  * [Object Types](#object-types)
 - [Endpoints](#endpoints-1)
-  * [User centric endpoints](#user-centric-endpoints)
+  * [User Centric Endpoints](#user-centric-endpoints)
     + [`GET /me/`](#get-me)
       - [Query Parameters](#query-parameters)
       - [Response](#response)
@@ -53,7 +53,7 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
         * [Query Parameters](#query-parameters-5)
       - [Response](#response-5)
         * [Errors](#errors-5)
-
+        
 # Communication
 
 The API is a REST API and therefore all methods are performed using HTTP requests - where JSON is the exchanged data format.
@@ -98,7 +98,7 @@ HTTP status codes are used for communicating the status of each operation. In th
 |------|:------------|:--------|
 | 301  | Moved permanently | Response has a `Location` header indicating the new location of the resource. |
 
-## Error status codes
+## Error Status Codes
 
 All errors responds with an *error* object, which is described in the *Errors* section below.
 
@@ -143,7 +143,7 @@ An endpoint in this API is a URL at the API. Each endpoint takes different forma
 
 Endpoints that has a name in plural (eg. user**s**) gets and manipulates a collection of objects - whereas all others get and manipulates single objects.
 
-## Object types
+## Object Types
 
 Object types are typical entities in the API. These entities can be a user, profile, image or product - each has its own format and properties. Typically objects types are associated with endpoints. These associations are as following.
 
@@ -159,7 +159,7 @@ There are, though, other sub-endpoints that responds with other object types - a
 
 # Endpoints
 
-## User centric endpoints
+## User Centric Endpoints
 
 ### `GET /me/`
 
