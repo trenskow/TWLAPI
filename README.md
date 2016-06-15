@@ -86,7 +86,7 @@ This is an example of a simple user creation requests.
     	"country": "DK"
     }
 
-Filters and authentication tokens are added to requests using query string.
+> **Remark:** Filters and authentication tokens are added to requests using query string.
 
 ## HTTP Status Codes
 
