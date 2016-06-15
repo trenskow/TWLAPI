@@ -75,9 +75,16 @@ This is an example of a simple user creation requests.
     
     HTTP/1.1 201 Created
     Content-Type: application/json; charset=utf-8
-    Content-Length: 0
+    Content-Length: 151
     
-    [end-of-request]
+    {
+    	"approved": false,
+    	"email": "my@email.com",
+    	"username": "myusername",
+    	"name": "My name",
+    	"currency": "DKK",
+    	"country": "DK"
+    }
 
 Filters and authentication tokens are added to requests using query string.
 
