@@ -274,7 +274,7 @@ Creates a new user.
 ##### JSON
 
 | Key | Type | Required | Default Value | RegEx | Description |
-|:----|:-----|:--------:|:-------:|:------------|
+|:----|:-----|:--------:|:-------------:|:-----:|:------------|
 | email | String | ✅ | | `/^[^ ]+$/` | The users e-mail address.
 | password | String | ✅ | | `/^.{8,}$/` | The users newly created password.
 | name | String | ✅ | | | The users name.
@@ -320,7 +320,7 @@ Updates a user.
 ##### JSON
 
 | Key | Type | Required | Default Value | RegEx | Description |
-|:----|:-----|:--------:|:-------:|:------------|
+|:----|:-----|:--------:|:-------------:|:-----:|:------------|
 | username | String | ✅ | | `/^[^ ]$` | The users new username (modified moves the resource).
 | email | String | ✅ | | `/^[^ ]+$/` | The users e-mail address.
 | password | String | ✅ | | `/^.{8,}$/` | The users newly created password.
