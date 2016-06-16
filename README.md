@@ -19,43 +19,50 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
   * [Errors](#errors)
 - [Terminology](#terminology)
   * [Endpoints](#endpoints)
+    + [Parameters](#parameters)
+    + [Query Parameters](#query-parameters)
+    + [JSON Body](#json-body)
   * [Object Types](#object-types)
 - [Endpoints](#endpoints-1)
   * [User Centric Endpoints](#user-centric-endpoints)
     + [`GET /users/`](#get-users)
       - [Request](#request)
-        * [Query Parameters](#query-parameters)
+        * [Query Parameters](#query-parameters-1)
       - [Response](#response)
-        * [JSON](#json)
+        * [JSON Body](#json-body-1)
         * [Errors](#errors-1)
     + [`GET /me/`](#get-me)
       - [Request](#request-1)
-        * [Query Parameters](#query-parameters-1)
+        * [Query Parameters](#query-parameters-2)
       - [Response](#response-1)
         * [Headers](#headers)
     + [`GET /users/[username|email]`](#get-usersusernameemail)
       - [Request](#request-2)
-        * [Query Parameters](#query-parameters-2)
+        * [Parameters](#parameters-1)
+        * [Query Parameters](#query-parameters-3)
       - [Response](#response-2)
-        * [JSON](#json-1)
+        * [JSON Body](#json-body-2)
         * [Errors](#errors-2)
     + [`POST /users/[username|email]/`](#post-usersusernameemail)
       - [Request](#request-3)
-        * [Query Parameters](#query-parameters-3)
-        * [JSON](#json-2)
+        * [Parameters](#parameters-2)
+        * [Query Parameters](#query-parameters-4)
+        * [JSON Body](#json-body-3)
       - [Response](#response-3)
-        * [JSON](#json-3)
+        * [JSON Body](#json-body-4)
         * [Errors](#errors-3)
     + [`PUT /users/[username|email]/`](#put-usersusernameemail)
       - [Request](#request-4)
-        * [Query Parameters](#query-parameters-4)
-        * [JSON](#json-4)
+        * [Parameters](#parameters-3)
+        * [Query Parameters](#query-parameters-5)
+        * [JSON Body](#json-body-5)
       - [Response](#response-4)
         * [Headers](#headers-1)
         * [Errors](#errors-4)
     + [`DELETE /users/[username|email]/`](#delete-usersusernameemail)
       - [Request](#request-5)
-        * [Query Parameters](#query-parameters-5)
+        * [Parameters](#parameters-4)
+        * [Query Parameters](#query-parameters-6)
       - [Response](#response-5)
         * [Errors](#errors-5)
         
@@ -156,6 +163,23 @@ An endpoint in this API is a URL at the API. Each endpoint takes different forma
 
 Endpoints that has a name in plural (eg. user**s**) gets and manipulates a collection of objects - whereas all others get and manipulates single objects.
 
+
+### Parameters
+
+Parameters are typically resource names - an example is the `POST /users/myusername/auths/` endpoint, where the `myusername` part is the parameter. Parameters in the documentation is indicated using the `[]` notation in the documentation of the endpoint names - as with the previous example, it is expressed as `POST /users/[username|email]/auths/`, indicating that the parameter - in this case - can be both a username and an e-mail address.
+
+> **Remark:** Parameters must by UTF-8 percent encoded (URL encoded).
+
+### Query Parameters
+
+Query parameters are parameters that is supplied to the APIs using the query string part of the URL. As of now the only parameters provided through query strings are filters and authentication tokens.
+
+> **Remark:** Query parameters must by UTF-8 percent encoded (URL encoded).
+
+### JSON Body
+
+JSON data is for more heavy weight data objects sent to - or received by - the API. The JSON format is specified - if any, for both requests and responses - in the documentation of each endpoint.
+
 ## Object Types
 
 Object types are typical entities in the API. These entities can be a user, profile, image or product - each has its own format and properties. Typically objects types are associated with endpoints. These associations are as following.
@@ -190,7 +214,7 @@ Returns a collection of all users.
 
 `200 OK`
 
-##### JSON
+##### JSON Body
 
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
@@ -239,6 +263,15 @@ Gets a user.
 
 #### Request
 
+##### Parameters
+
+| Name | Match | Description |
+|:-----|:------|:------------|
+| username | `/^[^ ]+$/` | The username of the user.
+| email | - an e-mail address | The e-mail of the user.
+
+> **Remark:** Do not provide both - use either/or.
+
 ##### Query Parameters
 
 | Name | Type | Required | Description |
@@ -249,7 +282,7 @@ Gets a user.
 
 `200 OK`
 
-##### JSON
+##### JSON Body
 
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
@@ -279,15 +312,24 @@ Creates a new user.
 
 #### Request
 
+##### Parameters
+
+| Name | Match | Description |
+|:-----|:------|:------------|
+| username | `/^[^ ]+$/` | The username of the user.
+| email | - an e-mail address | The e-mail of the user.
+
+> **Remark:** Do not provide both - use either/or.
+
 ##### Query Parameters
 
 | Name | Type | Required | Description |
 |:-----|:-----|:--------:|:------------|
 | `app-secret` | String | ✅ | The application secret.
 
-##### JSON
+##### JSON Body
 
-| Key | Type | Required | Default Value | RegEx | Description |
+| Key | Type | Required | Default Value | Match | Description |
 |:----|:-----|:--------:|:-------------:|:-----:|:------------|
 | email | String | ✅ | | `/^[^ ]+$/` | The users e-mail address.
 | password | String | ✅ | | `/^.{8,}$/` | The users newly created password.
@@ -299,7 +341,7 @@ Creates a new user.
 
 `201 Created`
 
-##### JSON
+##### JSON Body
 
 | Key | Type | Description |
 |:----|:-----|:------------|
@@ -325,15 +367,24 @@ Updates a user.
 
 #### Request
 
+##### Parameters
+
+| Name | Match | Description |
+|:-----|:------|:------------|
+| username | `/^[^ ]+$/` | The username of the user.
+| email | - an e-mail address | The e-mail of the user.
+
+> **Remark:** Do not provide both - use either/or.
+
 ##### Query Parameters
 
 | Name | Type | Required | Default Value | Description |
 |:-----|:-----|:--------:|:-------:|:------------|
 | `auth` | String | ✅ | | The user's authorization token.
 
-##### JSON
+##### JSON Body
 
-| Key | Type | Required | Default Value | RegEx | Description |
+| Key | Type | Required | Default Value | Match | Description |
 |:----|:-----|:--------:|:-------------:|:-----:|:------------|
 | username | String | ✅ | | `/^[^ ]$` | The users new username (modified moves the resource).
 | email | String | ✅ | | `/^[^ ]+$/` | The users e-mail address.
@@ -367,6 +418,15 @@ On `301` the response also has a `Location` header, with the new location of the
 Deletes a user.
 
 #### Request
+
+##### Parameters
+
+| Name | Match | Description |
+|:-----|:------|:------------|
+| username | `/^[^ ]+$/` | The username of the user.
+| email | - an e-mail address | The e-mail of the user.
+
+> **Remark:** Do not provide both - use either/or.
 
 ##### Query Parameters
 
