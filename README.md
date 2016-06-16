@@ -65,7 +65,7 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
         * [Query Parameters](#query-parameters-6)
       - [Response](#response-5)
         * [Headers](#headers-1)
-        
+
 # Protocol
 
 The API is a REST API and therefore all methods are performed using the HTTP protocol - where JSON is the default exchanged data format.
@@ -76,7 +76,7 @@ This is an example of a simple user creation request.
     Host: api.thingswelove.org
     Content-Type: application/json; charset=utf-8
     Content-Length: 134
-    
+
     {
     	"email": "my@email.com",
     	"password": "thisismypassword",
@@ -84,11 +84,11 @@ This is an example of a simple user creation request.
     	"currency": "DKK",
     	"country": "DK"
     }
-    
+
     HTTP/1.1 201 Created
     Content-Type: application/json; charset=utf-8
     Content-Length: 151
-    
+
     {
     	"approved": false,
     	"email": "my@email.com",
@@ -104,35 +104,45 @@ This is an example of a simple user creation request.
 
 HTTP status codes are used for communicating the overall result of a request. In these APIs the following status codes has the following meaning.
 
-## Success Status Codes
+### Success Status Codes
 
 | Code | Description | JSON Response |
 |------|:------------|:-------------:|
-| 200  | Request succeeded | ✅
-| 201  | Content was created | ✅
-| 204  | Request succeeded with no response
+| `200`  | Request succeeded | ✅
+| `201`  | Content was created | ✅
+| `204`  | Request succeeded with no response
 
-## Redirection Status Codes
+### Redirection Status Codes
 
 | Code | Description | Comment |
 |------|:------------|:--------|
-| 301  | Moved permanently | Response has a `Location` header indicating the new location of the resource. |
+| `301`  | Moved permanently | Response has a `Location` header indicating the new location of the resource. |
 
-## Error Status Codes
+### Error Status Codes
 
 All errors responds with an *error* object, which is described in the *Errors* section below.
 
 | Code | Description |
 |------|:------------|
-| 400 | Bad request (typically validation errors)
-| 403 | Forbidden
-| 404 | Resource not found
-| 409 | Resource already exists
-| 500 | Internal server error
+| `400` | Bad request (typically validation errors)
+| `403` | Forbidden
+| `404` | Resource not found
+| `409` | Resource already exists
+| `500` | Internal server error
+
+## HTTP Methods
+
+| Name | Action |
+|:-----|:-------|
+| `GET` | Gets objects or collections.
+| `POST` | Creates objects.
+| `PUT` | Replaces objects.
+| `PATCH` | Updates objects (absent keys in objects are not changed - keys with the value of `null` are deleted).
+| `DELETE` | Deletes objects.
 
 ## Errors
 
-All errors in the API are represented by an error object. This is a simple JSON object that gives an error name - which can be machine interpreted - an a description, which can be displayed directly to the user. Validation errors also has a `key` property that describes the key at which validation failed (both in JSON body and in URL queries).
+All errors in the API are represented by an error object, and - as mentioned above - a HTTP status code `>= 400`. This is a simple JSON object that gives a `name` - which can be machine interpreted - an a `description`, which can be displayed directly to the user. Validation errors also has the `key` key that describes the key at which validation failed (both in JSON body and in URL queries).
 
 This is an example of an error.
 
@@ -142,7 +152,7 @@ This is an example of an error.
             "description": "Username is already taken."
         }
     }
- 
+
 \- and a validation error example.
 
     {
@@ -188,10 +198,14 @@ Object types are typical entities in the APIs. These entities can be a user, pro
  - `/profiles/` responds with *profile objects*.
  - `/inages/` responds with *image objects*.
  - `/products/` responds with *product objects*.
- 
+
 > Each object is described under their designated endpoint's documentation below.
 
 There are, though, other sub-endpoints that responds with other object types - an example is the `GET /users/myusername/profiles/`, which returns a collection of profile objects associated with the specified user.
+
+# Types
+
+Generic types - like string, integers and booleans - are - because of the nature of JSON - expressed in their respective JavaScript type's name (eg. String, Number, Boolean).
 
 
 # Endpoints
@@ -206,9 +220,11 @@ Returns a collection of all users.
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|:-----|:-----|:--------:|:------------|
-| `filter` | String | ✅ | The filter to apply to the collection.
+| Name | Type | Required | Default Value | Description |
+|:-----|:-----|:--------:|:-------------:|:------------|
+| `auth` | String | ✅ | | The user's authorization token.
+| `filter` | String | ✅ | | The filter to apply to the collection.
+| `offset` | Number | | `0` | The offset in collection.
 
 #### Response
 
@@ -218,21 +234,25 @@ Returns a collection of all users.
 
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
-| approved | Boolean | ✅ | Indicates if the user is approved to create profiles.
-| admin | Boolean | ✅ | Indicates if the user is an administrator.
-| username | String | | The user's username.
-| name | String | | The user's name.
-| email | String | ✅ | E-mail of user.
-| currency | String | | ISO 4217 formatted currency code.
-| country | String | | ISO 3166-1 formatted country code.
+| `pagination` | Object |  | Pagination information
+| `pagination.offset` | Number | | The current resources offset in the collection.
+| `pagination.total` | Number | | The total number of resources in collection.
+| `collection` | Array | | The actual collection of resources.
+| `collection.approved` | Boolean | ✅ | Indicates if the user is approved to create profiles.
+| `collection.admin` | Boolean | ✅ | Indicates if the user is an administrator.
+| `collection.username` | String | | The user's username.
+| `collection.name` | String | | The user's name.
+| `collection.email` | String | ✅ | E-mail of user.
+| `collection.currency` | String | | ISO 4217 formatted currency code.
+| `collection.country` | String | | ISO 3166-1 formatted country code.
 
-> Optionals are only available to authorized (eg. logged in) users.
+> Optionals (✅) are only available to authorized (eg. logged in) users.
 
 ##### Errors
 
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
-| 400 | validation-error | The request could not be validated (missing a filter).
+| `400` | validation-error | The request could not be validated (missing a filter).
 
 ----
 
@@ -246,8 +266,8 @@ Gets a user.
 
 | Name | Match | Description |
 |:-----|:------|:------------|
-| username | `/^[^ ]+$/` | The username of the user.
-| email | - an e-mail address | The e-mail of the user.
+| `username` | `/^[^ ]+$/` | The username of the user.
+| `email` | - an e-mail address | The e-mail of the user.
 
 > **Remark:** Do not provide both - use either/or.
 
@@ -265,22 +285,22 @@ Gets a user.
 
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
-| approved | Boolean | ✅ | Indicates if the user is approved to create profiles.
-| admin | Boolean | ✅ | Indicates if the user is an administrator.
-| username | String | | The user's username.
-| name | String | | The user's name.
-| email | String | ✅ | E-mail of user.
-| currency | String | | ISO 4217 formatted currency code.
-| country | String | | ISO 3166-1 formatted country code.
+| `approved` | Boolean | ✅ | Indicates if the user is approved to create profiles.
+| `admin` | Boolean | ✅ | Indicates if the user is an administrator.
+| `username` | String | | The user's username.
+| `name` | String | | The user's name.
+| `email` | String | ✅ | E-mail of user.
+| `currency` | String | | ISO 4217 formatted currency code.
+| `country` | String | | ISO 3166-1 formatted country code.
 
-> Optionals are only available to authorized (eg. logged in) users.
+> Optionals (✅) are only available to authorized (eg. logged in) users.
 
 ##### Errors
 
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
-| 403 | not-authorized | The logged in user is not authorized to modify this user.
-| 404 | not-found | The user was not found.
+| `403` | not-authorized | The logged in user is not authorized to modify this user.
+| `404` | not-found | The user was not found.
 
 ----
 
@@ -296,8 +316,8 @@ Creates a new user.
 
 | Name | Match | Description |
 |:-----|:------|:------------|
-| username | `/^[^ ]+$/` | The username of the user.
-| email | - an e-mail address | The e-mail of the user.
+| `username` | `/^[^ ]+$/` | The username of the user.
+| `email` | - an e-mail address | The e-mail of the user.
 
 > **Remark:** Do not provide both - use either/or.
 
@@ -311,11 +331,11 @@ Creates a new user.
 
 | Key | Type | Required | Default Value | Match | Description |
 |:----|:-----|:--------:|:-------------:|:-----:|:------------|
-| email | String | ✅ | | `/^[^ ]+$/` | The user's e-mail address.
-| password | String | ✅ | | `/^.{8,}$/` | The user's newly created password.
-| name | String | ✅ | | | The user's name.
-| currency | String | | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
-| country | String | ✅ | | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
+| `email` | String | ✅ | | `/^[^ ]+$/` | The user's e-mail address.
+| `password` | String | ✅ | | `/^.{8,}$/` | The user's newly created password.
+| `name` | String | ✅ | | | The user's name.
+| `currency` | String | | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
+| `country` | String | ✅ | | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
 
 #### Response
 
@@ -325,26 +345,26 @@ Creates a new user.
 
 | Key | Type | Description |
 |:----|:-----|:------------|
-| approved | Boolean | Indicates if the user is approved to create profiles.
-| admin | Boolean | Indicates if the user is an administrator.
-| username | String | The user's username.
-| name | String | The user's name.
-| email | String | E-mail of user.
-| currency | String | ISO 4217 formatted currency code.
-| country | String | ISO 3166-1 formatted country code.
+| `approved` | Boolean | Indicates if the user is approved to create profiles.
+| `admin` | Boolean | Indicates if the user is an administrator.
+| `username` | String | The user's username.
+| `name` | String | The user's name.
+| `email` | String | E-mail of user.
+| `currency` | String | ISO 4217 formatted currency code.
+| `country` | String | ISO 3166-1 formatted country code.
 
 ##### Errors
 
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
-| 400 | validation-error | The request could not be validated.
-| 409 | user-exists | The username already exists.
+| `400` | validation-error | The request could not be validated.
+| `409` | user-exists | The username already exists.
 
 ----
 
 ### `PUT /users/[username|email]/`
 
-Updates a user.
+Replaces a user.
 
 #### Request
 
@@ -352,8 +372,8 @@ Updates a user.
 
 | Name | Match | Description |
 |:-----|:------|:------------|
-| username | `/^[^ ]+$/` | The username of the user.
-| email | - an e-mail address | The e-mail of the user.
+| `username` | `/^[^ ]+$/` | The username of the user.
+| `email` | - an e-mail address | The e-mail of the user.
 
 > **Remark:** Do not provide both - use either/or.
 
@@ -367,14 +387,14 @@ Updates a user.
 
 | Key | Type | Required | Default Value | Match | Description |
 |:----|:-----|:--------:|:-------------:|:-----:|:------------|
-| approved | Boolean | ✅ | `false` | | Indicates if the user is approved to create profiles.
-| admin | Boolean | ✅ | `false` | Indicates if the user is an administrator.
-| username | String | ✅ | | `/^[^ ]$` | The user's new username (modified moves the resource).
-| email | String | ✅ | | `/^[^ ]+$/` | The user's e-mail address.
-| password | String | ✅ | | `/^.{8,}$/` | The user's newly created password.
-| name | String | ✅ | | | The user's name.
-| currency | String | ✅ | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
-| country | String | ✅ | | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
+| `approved` | Boolean | ✅ | `false` | | Indicates if the user is approved to create profiles.
+| `admin` | Boolean | ✅ | `false` | | Indicates if the user is an administrator.
+| `username` | String | ✅ | | `/^[^ ]$` | The user's new username (modified moves the resource).
+| `email` | String | ✅ | | `/^[^ ]+$/` | The user's e-mail address.
+| `password` | String | ✅ | | `/^.{8,}$/` | The user's newly created password.
+| `name` | String | ✅ | | | The user's name.
+| `currency` | String | ✅ | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
+| `country` | String | ✅ | | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
 
 #### Response
 
@@ -389,10 +409,64 @@ On `301` the response also has a `Location` header, with the new location of the
 
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
-| 400 | validation-error | The request could not be validated.
-| 403 | not-authorized | The logged in user is not authorized to modify this user.
-| 404 | not-found | The user was not found.
-| 409 | user-exists | The username already exists.
+| `400` | validation-error | The request could not be validated.
+| `403` | not-authorized | The logged in user is not authorized to modify this user.
+| `404` | not-found | The user was not found.
+| `409` | user-exists | The username already exists.
+
+----
+
+### `PATCH /users/[username|email]/`
+
+Updates a user.
+
+#### Request
+
+##### Parameters
+
+| Name | Match | Description |
+|:-----|:------|:------------|
+| `username` | `/^[^ ]+$/` | The username of the user.
+| `email` | - an e-mail address | The e-mail of the user.
+
+> **Remark:** Do not provide both - use either/or.
+
+##### Query Parameters
+
+| Name | Type | Required | Default Value | Description |
+|:-----|:-----|:--------:|:-------:|:------------|
+| `auth` | String | ✅ | | The user's authorization token.
+
+##### JSON Body
+
+| Key | Type | Match | Description |
+|:----|:-----|:-----:|:------------|
+| `approved` | Boolean | | Indicates if the user is approved to create profiles.
+| `admin` | Boolean |  | | Indicates if the user is an administrator.
+| `username` | String | `/^[^ ]$` | The user's new username (modified moves the resource).
+| `email` | String |  | `/^[^ ]+$/` | The user's e-mail address.
+| `password` | String | `/^.{8,}$/` | The user's newly created password.
+| `name` | String |  | The user's name.
+| `currency` | String | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
+| `country` | String | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
+
+#### Response
+
+- `204 Modified`
+- `301 Permanently Moved`
+
+##### Headers
+
+On `301` the response also has a `Location` header, with the new location of the user.
+
+##### Errors
+
+| HTTP Status Code | Name | Description |
+|:-----------------|:-----|:------------|
+| `400` | validation-error | The request could not be validated.
+| `403` | not-authorized | The logged in user is not authorized to modify this user.
+| `404` | not-found | The user was not found.
+| `409` | user-exists | The username already exists.
 
 ----
 
@@ -406,8 +480,8 @@ Deletes a user.
 
 | Name | Match | Description |
 |:-----|:------|:------------|
-| username | `/^[^ ]+$/` | The username of the user.
-| email | - an e-mail address | The e-mail of the user.
+| `username` | `/^[^ ]+$/` | The username of the user.
+| `email` | - an e-mail address | The e-mail of the user.
 
 > **Remark:** Do not provide both - use either/or.
 
@@ -425,9 +499,9 @@ Deletes a user.
 
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
-| 400 | validation-error | The request could not be validated.
-| 403 | not-authorized | The logged in user is not authorized to delete this user.
-| 404 | not-found | The user was not found.
+| `400` | validation-error | The request could not be validated.
+| `403` | not-authorized | The logged in user is not authorized to delete this user.
+| `404` | not-found | The user was not found.
 
 ----
 
