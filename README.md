@@ -235,6 +235,7 @@ Returns a collection of all users.
 | `auth` | String | ✅ | | The user's authorization token.
 | `filter` | String | ✅ | | The filter to apply to the collection.
 | `offset` | Number | | `0` | The offset in collection.
+| `count` | Number | | `40` | The number of users in collection.
 
 #### Response
 
@@ -245,9 +246,10 @@ Returns a collection of all users.
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
 | `pagination` | Object |  | Pagination information
-| `pagination.offset` | Number | | The current resources offset in the collection.
-| `pagination.total` | Number | | The total number of resources in collection.
-| `collection` | Array | | The actual collection of resources.
+| `pagination.offset` | Number | | The current offset in the collection.
+| `pagination.count` | Number | | The number of users in collection.
+| `pagination.total` | Number | | The total number of users in collection.
+| `collection` | Array | | The actual collection of users.
 | `collection.approved` | Boolean | ✅ | Indicates if the user is approved to create profiles.
 | `collection.admin` | Boolean | ✅ | Indicates if the user is an administrator.
 | `collection.username` | String | | The user's username.
@@ -449,16 +451,16 @@ Updates a user.
 
 ##### JSON Body
 
-| Key | Type | Match | Description |
-|:----|:-----|:-----:|:------------|
-| `approved` | Boolean | | Indicates if the user is approved to create profiles.
-| `admin` | Boolean |  | | Indicates if the user is an administrator.
-| `username` | String | `/^[^ ]$` | The user's new username (modified moves the resource).
-| `email` | String |  | `/^[^ ]+$/` | The user's e-mail address.
-| `password` | String | `/^.{8,}$/` | The user's newly created password.
-| `name` | String |  | The user's name.
-| `currency` | String | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
-| `country` | String | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
+| Key | Type | Match | Nullable |Description |
+|:----|:-----|:-----:|:--------:|------------|
+| `approved` | Boolean | | ❌ | Indicates if the user is approved to create profiles.
+| `admin` | Boolean |  | ❌ | Indicates if the user is an administrator.
+| `username` | String | `/^[^ ]$`  | ❌ | The user's new username (modified moves the resource).
+| `email` | String | `/^[^ ]+$/` | ❌ | The user's e-mail address.
+| `password` | String | `/^.{8,}$/` | ❌ | The user's newly created password.
+| `name` | String | | ❌ | The user's name.
+| `currency` | String | `/^[A-Z]{3}$` | ❌ | ISO 4217 formatted currency code.
+| `country` | String | `/^[A-Z]{2}$` | ❌ | ISO 3166-1 formatted country code.
 
 #### Response
 
