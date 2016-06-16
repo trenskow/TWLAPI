@@ -31,46 +31,46 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
       - [Response](#response)
         * [JSON Body](#json-body)
         * [Errors](#errors-1)
-    + [`GET /me/`](#get-me)
+    + [`GET /users/[username|email]`](#get-usersusernameemail)
       - [Request](#request-1)
+        * [Parameters](#parameters-1)
         * [Query Parameters](#query-parameters-2)
       - [Response](#response-1)
-        * [Headers](#headers)
-    + [`GET /users/[username|email]`](#get-usersusernameemail)
-      - [Request](#request-2)
-        * [Parameters](#parameters-1)
-        * [Query Parameters](#query-parameters-3)
-      - [Response](#response-2)
         * [JSON Body](#json-body-1)
         * [Errors](#errors-2)
     + [`POST /users/[username|email]/`](#post-usersusernameemail)
-      - [Request](#request-3)
+      - [Request](#request-2)
         * [Parameters](#parameters-2)
-        * [Query Parameters](#query-parameters-4)
+        * [Query Parameters](#query-parameters-3)
         * [JSON Body](#json-body-2)
-      - [Response](#response-3)
+      - [Response](#response-2)
         * [JSON Body](#json-body-3)
         * [Errors](#errors-3)
     + [`PUT /users/[username|email]/`](#put-usersusernameemail)
-      - [Request](#request-4)
+      - [Request](#request-3)
         * [Parameters](#parameters-3)
-        * [Query Parameters](#query-parameters-5)
+        * [Query Parameters](#query-parameters-4)
         * [JSON Body](#json-body-4)
-      - [Response](#response-4)
-        * [Headers](#headers-1)
+      - [Response](#response-3)
+        * [Headers](#headers)
         * [Errors](#errors-4)
     + [`DELETE /users/[username|email]/`](#delete-usersusernameemail)
-      - [Request](#request-5)
+      - [Request](#request-4)
         * [Parameters](#parameters-4)
+        * [Query Parameters](#query-parameters-5)
+      - [Response](#response-4)
+        * [Errors](#errors-5)
+    + [`GET /me/`](#get-me)
+      - [Request](#request-5)
         * [Query Parameters](#query-parameters-6)
       - [Response](#response-5)
-        * [Errors](#errors-5)
+        * [Headers](#headers-1)
         
 # Protocol
 
 The API is a REST API and therefore all methods are performed using the HTTP protocol - where JSON is the default exchanged data format.
 
-This is an example of a simple user creation requests.
+This is an example of a simple user creation request.
 
     POST /users/myusername HTTP/1.1
     Host: api.thingswelove.org
@@ -98,11 +98,11 @@ This is an example of a simple user creation requests.
     	"country": "DK"
     }
 
-> **Remark:** Filters and authentication tokens are added to requests using query string.
+> **Remark:** Filters and authentication tokens are provided to requests using query string.
 
 ## HTTP Status Codes
 
-HTTP status codes are used for communicating the status of each operation. In this API the following status code has the following meaning.
+HTTP status codes are used for communicating the overall result of a request. In these APIs the following status codes has the following meaning.
 
 ## Success Status Codes
 
@@ -124,7 +124,7 @@ All errors responds with an *error* object, which is described in the *Errors* s
 
 | Code | Description |
 |------|:------------|
-| 400 | Bad request (typically data validation errors)
+| 400 | Bad request (typically validation errors)
 | 403 | Forbidden
 | 404 | Resource not found
 | 409 | Resource already exists
@@ -132,7 +132,7 @@ All errors responds with an *error* object, which is described in the *Errors* s
 
 ## Errors
 
-All errors in the API are represented by an error object. This is a simple JSON object that gives a error name - which can be machine interpreted - an a description, which can be displayed directly to the user. Validation errors also has a `key` property that describes the key at which validation failed (both in JSON body and in URL queries).
+All errors in the API are represented by an error object. This is a simple JSON object that gives an error name - which can be machine interpreted - an a description, which can be displayed directly to the user. Validation errors also has a `key` property that describes the key at which validation failed (both in JSON body and in URL queries).
 
 This is an example of an error.
 
@@ -153,20 +153,20 @@ This is an example of an error.
         }
     }
 
-The `GET /errors/` endpoint returns a list of all possible errors - useful for localization.
+The `GET /errors/` endpoint returns a list of all possible errors - useful for localizing error messages.
 
 # Terminology
 
 ## Endpoints
 
-An endpoint in this API is a URL at the API. Each endpoint takes different formatted JSON bodies and different query parameters. Some endpoints require authentication and others do not. As an example, the `GET /products/` and `POST /users/myusername` is an endpoint.
+An endpoint in these APIs is a URL of the API. Each endpoint takes different formatted JSON bodies and different query parameters. Some endpoints require authentication and others do not. As an example, the `GET /products/` and `POST /users/myusername/` is an endpoint.
 
-Endpoints that has a name in plural (eg. user**s**) gets and manipulates a collection of objects - whereas all others get and manipulates single objects.
+Endpoints that has its name in plural (eg. *user**s***) gets and manipulates a collection of objects - whereas all others get and manipulates single objects.
 
 
 ### Parameters
 
-Parameters are typically resource names - an example is the `POST /users/myusername/auths/` endpoint, where the `myusername` part is the parameter. Parameters in the documentation is indicated using the `[]` notation in the documentation of the endpoint names - as with the previous example, it is expressed as `POST /users/[username|email]/auths/`, indicating that the parameter - in this case - can be both a username and an e-mail address.
+Parameters are typically resource names - an example is the `POST /users/myusername/auths/` endpoint, where the `myusername` part is the parameter. Parameters in the documentation is indicated using the `[]` notation of endpoint names - as with the previous example, it is expressed as `POST /users/[username|email]/auths/`, indicating that the parameter - in this case - can be both a username and an e-mail address.
 
 > **Remark:** Parameters must by UTF-8 percent encoded (URL encoded).
 
@@ -178,18 +178,18 @@ Query parameters are parameters that is supplied to the APIs using the query str
 
 ### JSON Bodies
 
-JSON data is for more heavy weight data objects sent to - or received by - the API. The JSON format is specified - if any, for both requests and responses - in the documentation of each endpoint.
+JSON data is for more heavy weight data objects sent to - or received by - the APIs. The JSON format is specified - if any, for both requests and responses - in the documentation of each endpoint.
 
 ## Object Types
 
-Object types are typical entities in the API. These entities can be a user, profile, image or product - each has its own format and properties. Typically objects types are associated with endpoints. These associations are as following.
+Object types are typical entities in the APIs. These entities can be a user, profile, image or product - each has its own format and properties. Typically objects types are associated with endpoints. The generic associations are as follows.
 
  - `/users/` responds with *user objects*.
  - `/profiles/` responds with *profile objects*.
  - `/inages/` responds with *image objects*.
  - `/products/` responds with *product objects*.
  
-> Each object is described under their designated endpoints below.
+> Each object is described under their designated endpoint's documentation below.
 
 There are, though, other sub-endpoints that responds with other object types - an example is the `GET /users/myusername/profiles/`, which returns a collection of profile objects associated with the specified user.
 
@@ -219,8 +219,9 @@ Returns a collection of all users.
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
 | approved | Boolean | ✅ | Indicates if the user is approved to create profiles.
-| username | String | | The users username.
-| name | String | | The users name.
+| admin | Boolean | ✅ | Indicates if the user is an administrator.
+| username | String | | The user's username.
+| name | String | | The user's name.
 | email | String | ✅ | E-mail of user.
 | currency | String | | ISO 4217 formatted currency code.
 | country | String | | ISO 3166-1 formatted country code.
@@ -232,28 +233,6 @@ Returns a collection of all users.
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
 | 400 | validation-error | The request could not be validated (missing a filter).
-
-----
-
-### `GET /me/`
-
-Redirects the request to the currently logged in user.
-
-#### Request
-
-##### Query Parameters
-
-| Name | Type | Required  | Description |
-|:-----|:-----|:--------:|:------------|
-| `auth` | String | ✅ | The user's authorization token.
-
-#### Response
-
-`301 Permanently Moved`
-
-##### Headers
-
-`Location` - Location of the logged in user (eg. `/users/myusername/`).
 
 ----
 
@@ -287,8 +266,9 @@ Gets a user.
 | Key | Type | Optional | Description |
 |:----|:-----|:--------:|:------------|
 | approved | Boolean | ✅ | Indicates if the user is approved to create profiles.
-| username | String | | The users username.
-| name | String | | The users name.
+| admin | Boolean | ✅ | Indicates if the user is an administrator.
+| username | String | | The user's username.
+| name | String | | The user's name.
 | email | String | ✅ | E-mail of user.
 | currency | String | | ISO 4217 formatted currency code.
 | country | String | | ISO 3166-1 formatted country code.
@@ -331,9 +311,9 @@ Creates a new user.
 
 | Key | Type | Required | Default Value | Match | Description |
 |:----|:-----|:--------:|:-------------:|:-----:|:------------|
-| email | String | ✅ | | `/^[^ ]+$/` | The users e-mail address.
-| password | String | ✅ | | `/^.{8,}$/` | The users newly created password.
-| name | String | ✅ | | | The users name.
+| email | String | ✅ | | `/^[^ ]+$/` | The user's e-mail address.
+| password | String | ✅ | | `/^.{8,}$/` | The user's newly created password.
+| name | String | ✅ | | | The user's name.
 | currency | String | | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
 | country | String | ✅ | | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
 
@@ -346,8 +326,9 @@ Creates a new user.
 | Key | Type | Description |
 |:----|:-----|:------------|
 | approved | Boolean | Indicates if the user is approved to create profiles.
-| username | String | The users username.
-| name | String | The users name.
+| admin | Boolean | Indicates if the user is an administrator.
+| username | String | The user's username.
+| name | String | The user's name.
 | email | String | E-mail of user.
 | currency | String | ISO 4217 formatted currency code.
 | country | String | ISO 3166-1 formatted country code.
@@ -386,11 +367,13 @@ Updates a user.
 
 | Key | Type | Required | Default Value | Match | Description |
 |:----|:-----|:--------:|:-------------:|:-----:|:------------|
-| username | String | ✅ | | `/^[^ ]$` | The users new username (modified moves the resource).
-| email | String | ✅ | | `/^[^ ]+$/` | The users e-mail address.
-| password | String | ✅ | | `/^.{8,}$/` | The users newly created password.
-| name | String | ✅ | | | The users name.
-| currency | String | | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
+| approved | Boolean | ✅ | `false` | | Indicates if the user is approved to create profiles.
+| admin | Boolean | ✅ | `false` | Indicates if the user is an administrator.
+| username | String | ✅ | | `/^[^ ]$` | The user's new username (modified moves the resource).
+| email | String | ✅ | | `/^[^ ]+$/` | The user's e-mail address.
+| password | String | ✅ | | `/^.{8,}$/` | The user's newly created password.
+| name | String | ✅ | | | The user's name.
+| currency | String | ✅ | `USD` | `/^[A-Z]{3}$` | ISO 4217 formatted currency code.
 | country | String | ✅ | | `/^[A-Z]{2}$` | ISO 3166-1 formatted country code.
 
 #### Response
@@ -445,5 +428,27 @@ Deletes a user.
 | 400 | validation-error | The request could not be validated.
 | 403 | not-authorized | The logged in user is not authorized to delete this user.
 | 404 | not-found | The user was not found.
+
+----
+
+### `GET /me/`
+
+Redirects the request to the currently logged in user.
+
+#### Request
+
+##### Query Parameters
+
+| Name | Type | Required  | Description |
+|:-----|:-----|:--------:|:------------|
+| `auth` | String | ✅ | The user's authorization token.
+
+#### Response
+
+`301 Permanently Moved`
+
+##### Headers
+
+`Location` - Location of the logged in user (eg. `/users/myusername/`).
 
 ----
