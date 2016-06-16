@@ -21,7 +21,7 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
   * [Endpoints](#endpoints)
     + [Parameters](#parameters)
     + [Query Parameters](#query-parameters)
-    + [JSON Body](#json-body)
+    + [JSON Bodies](#json-bodies)
   * [Object Types](#object-types)
 - [Endpoints](#endpoints-1)
   * [User Centric Endpoints](#user-centric-endpoints)
@@ -29,7 +29,7 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
       - [Request](#request)
         * [Query Parameters](#query-parameters-1)
       - [Response](#response)
-        * [JSON Body](#json-body-1)
+        * [JSON Body](#json-body)
         * [Errors](#errors-1)
     + [`GET /me/`](#get-me)
       - [Request](#request-1)
@@ -41,21 +41,21 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
         * [Parameters](#parameters-1)
         * [Query Parameters](#query-parameters-3)
       - [Response](#response-2)
-        * [JSON Body](#json-body-2)
+        * [JSON Body](#json-body-1)
         * [Errors](#errors-2)
     + [`POST /users/[username|email]/`](#post-usersusernameemail)
       - [Request](#request-3)
         * [Parameters](#parameters-2)
         * [Query Parameters](#query-parameters-4)
-        * [JSON Body](#json-body-3)
+        * [JSON Body](#json-body-2)
       - [Response](#response-3)
-        * [JSON Body](#json-body-4)
+        * [JSON Body](#json-body-3)
         * [Errors](#errors-3)
     + [`PUT /users/[username|email]/`](#put-usersusernameemail)
       - [Request](#request-4)
         * [Parameters](#parameters-3)
         * [Query Parameters](#query-parameters-5)
-        * [JSON Body](#json-body-5)
+        * [JSON Body](#json-body-4)
       - [Response](#response-4)
         * [Headers](#headers-1)
         * [Errors](#errors-4)
@@ -176,7 +176,7 @@ Query parameters are parameters that is supplied to the APIs using the query str
 
 > **Remark:** Query parameters must by UTF-8 percent encoded (URL encoded).
 
-### JSON Body
+### JSON Bodies
 
 JSON data is for more heavy weight data objects sent to - or received by - the API. The JSON format is specified - if any, for both requests and responses - in the documentation of each endpoint.
 
