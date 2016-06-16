@@ -8,6 +8,9 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
 
 # TOC
 
+- [TWL API Documentation](#twl-api-documentation)
+- [Abstract](#abstract)
+- [TOC](#toc)
 - [Communication](#communication)
   * [HTTP Status Codes](#http-status-codes)
   * [Success Status Codes](#success-status-codes)
@@ -19,37 +22,39 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
   * [Object Types](#object-types)
 - [Endpoints](#endpoints-1)
   * [User Centric Endpoints](#user-centric-endpoints)
-    + [`GET /me/`](#get-me)
-      - [Query Parameters](#query-parameters)
-      - [Response](#response)
-        * [Headers](#headers)
     + [`GET /users/`](#get-users)
-      - [Query Parameters](#query-parameters-1)
-      - [Response](#response-1)
+      - [Request](#request)
+        * [Query Parameters](#query-parameters)
+      - [Response](#response)
         * [JSON](#json)
         * [Errors](#errors-1)
+    + [`GET /me/`](#get-me)
+      - [Request](#request-1)
+        * [Query Parameters](#query-parameters-1)
+      - [Response](#response-1)
+        * [Headers](#headers)
     + [`GET /users/[username|email]`](#get-usersusernameemail)
-      - [Request](#request)
+      - [Request](#request-2)
         * [Query Parameters](#query-parameters-2)
       - [Response](#response-2)
         * [JSON](#json-1)
         * [Errors](#errors-2)
     + [`POST /users/[username|email]/`](#post-usersusernameemail)
-      - [Request](#request-1)
+      - [Request](#request-3)
         * [Query Parameters](#query-parameters-3)
         * [JSON](#json-2)
       - [Response](#response-3)
         * [JSON](#json-3)
         * [Errors](#errors-3)
     + [`PUT /users/[username|email]/`](#put-usersusernameemail)
-      - [Request](#request-2)
+      - [Request](#request-4)
         * [Query Parameters](#query-parameters-4)
         * [JSON](#json-4)
       - [Response](#response-4)
         * [Headers](#headers-1)
         * [Errors](#errors-4)
     + [`DELETE /users/[username|email]/`](#delete-usersusernameemail)
-      - [Request](#request-3)
+      - [Request](#request-5)
         * [Query Parameters](#query-parameters-5)
       - [Response](#response-5)
         * [Errors](#errors-5)
@@ -169,31 +174,13 @@ There are, though, other sub-endpoints that responds with other object types - a
 
 ## User Centric Endpoints
 
-### `GET /me/`
-
-Redirects the request to the currently logged in user.
-
-#### Query Parameters
-
-| Name | Type | Required  | Description |
-|:-----|:-----|:--------:|:------------|
-| `auth` | String | ✅ | The user's authorization token.
-
-#### Response
-
-`301 Permanently Moved`
-
-##### Headers
-
-`Location` - Location of the logged in user (eg. `/users/myusername/`).
-
-----
-
 ### `GET /users/`
 
 Returns a collection of all users.
 
-#### Query Parameters
+#### Request
+
+##### Query Parameters
 
 | Name | Type | Required | Description |
 |:-----|:-----|:--------:|:------------|
@@ -221,6 +208,28 @@ Returns a collection of all users.
 | HTTP Status Code | Name | Description |
 |:-----------------|:-----|:------------|
 | 400 | validation-error | The request could not be validated (missing a filter).
+
+----
+
+### `GET /me/`
+
+Redirects the request to the currently logged in user.
+
+#### Request
+
+##### Query Parameters
+
+| Name | Type | Required  | Description |
+|:-----|:-----|:--------:|:------------|
+| `auth` | String | ✅ | The user's authorization token.
+
+#### Response
+
+`301 Permanently Moved`
+
+##### Headers
+
+`Location` - Location of the logged in user (eg. `/users/myusername/`).
 
 ----
 
