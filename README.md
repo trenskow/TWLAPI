@@ -24,7 +24,7 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
     + [Query Parameters](#query-parameters)
     + [JSON Bodies](#json-bodies)
   * [Object Types](#object-types)
-- [Types](#types)
+  * [Types](#types)
 - [Endpoints](#endpoints-1)
   * [User Centric Endpoints](#user-centric-endpoints)
     + [`GET /users/`](#get-users)
@@ -213,7 +213,7 @@ Object types are typical entities in the APIs. These entities can be a user, pro
 
 There are, though, other sub-endpoints that responds with other object types - an example is the `GET /users/myusername/profiles/`, which returns a collection of profile objects associated with the specified user.
 
-# Types
+## Types
 
 Generic types - like string, integers and booleans - are - because of the nature of JSON - expressed in their respective JavaScript type's name (eg. String, Number, Boolean).
 
