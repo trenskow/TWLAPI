@@ -11,7 +11,7 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
 - [TWL API Documentation](#twl-api-documentation)
 - [Abstract](#abstract)
 - [TOC](#toc)
-- [Communication](#communication)
+- [Protocol](#protocol)
   * [HTTP Status Codes](#http-status-codes)
   * [Success Status Codes](#success-status-codes)
   * [Redirection Status Codes](#redirection-status-codes)
@@ -66,9 +66,9 @@ This document describes the *thingswelove.org* (TWL) APIs. The APIs aims at inte
       - [Response](#response-5)
         * [Errors](#errors-5)
         
-# Communication
+# Protocol
 
-The API is a REST API and therefore all methods are performed using HTTP requests - where JSON is the exchanged data format.
+The API is a REST API and therefore all methods are performed using the HTTP protocol - where JSON is the default exchanged data format.
 
 This is an example of a simple user creation requests.
 
